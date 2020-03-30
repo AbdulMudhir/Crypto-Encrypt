@@ -42,7 +42,7 @@ public class CryptoUI implements ActionListener{
     byte[] iv;
 
 
-    private byte[] salt  = new byte[8];;
+    private byte[] salt;
 
 
 
@@ -213,6 +213,7 @@ public class CryptoUI implements ActionListener{
 
         //salt = new byte[8];
         int keySize = 256;
+        salt = new byte[8];
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 
@@ -245,10 +246,12 @@ public class CryptoUI implements ActionListener{
 
         String encodedString = Base64.getEncoder().withoutPadding().encodeToString(key.getEncoded());
 
-        String encodeEncryptedString = Base64.getEncoder().withoutPadding().encodeToString(ciphertext);
+        String encodedEncryptedString = Base64.getEncoder().withoutPadding().encodeToString(ciphertext);
 
-        String outputInfo = String.format("Encrypted String: %s \nEncoded IV Key: %s \nSalt: %s \nKey Size: %s", encodeEncryptedString, viString
-        ,salt, keySize);
+        //String encodedSalt = Base64.getEncoder().withoutPadding().encodeToString(salt);
+
+        String outputInfo = String.format("Encrypted String: %s \nEncoded IV Key: %s \nSalt: %s \nKey Size: %s", encodedEncryptedString, viString
+        , salt, keySize);
 
         encrpyedTextArea.setText(outputInfo);
 
@@ -263,15 +266,12 @@ public class CryptoUI implements ActionListener{
     public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException{
 
 
-
-        System.out.println(salt);
-
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
 
-        String oldKey = new String(passwordField.getPassword());
+        String originalKeyBase64String = new String(passwordField.getPassword());
 
-        byte [] decodedKey = Base64.getDecoder().decode(oldKey);
+        byte [] decodedKey = Base64.getDecoder().decode(originalKeyBase64String);
 
         SecretKey originalKey = new SecretKeySpec(decodedKey, 0 , decodedKey.length, "AES");
 
@@ -280,10 +280,10 @@ public class CryptoUI implements ActionListener{
 
         cipher.init(Cipher.DECRYPT_MODE,originalKey, new IvParameterSpec(oldIV));
 
-        String oldencryptedString = stringToEncryptTextArea.getText();
+        String oldEncryptedString = stringToEncryptTextArea.getText();
 
 
-        String plaintext = new String(cipher.doFinal(Base64.getDecoder().decode(oldencryptedString)), "UTF-8");
+        String plaintext = new String(cipher.doFinal(Base64.getDecoder().decode(oldEncryptedString)), "UTF-8");
 
         encrpyedTextArea.setText(new String(plaintext));
 
