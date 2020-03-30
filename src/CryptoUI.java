@@ -107,8 +107,6 @@ public class CryptoUI implements ActionListener{
                         ex.printStackTrace();
                     } catch (IllegalBlockSizeException ex) {
                         ex.printStackTrace();
-                    } catch (InvalidParameterSpecException ex) {
-                        ex.printStackTrace();
                     }
 
                 }
@@ -129,11 +127,7 @@ public class CryptoUI implements ActionListener{
                         ex.printStackTrace();
                     } catch (IllegalBlockSizeException ex) {
                         ex.printStackTrace();
-                    } catch (NoSuchPaddingException ex) {
-                        ex.printStackTrace();
                     } catch (InvalidParameterSpecException ex) {
-                        ex.printStackTrace();
-                    } catch (InvalidAlgorithmParameterException ex) {
                         ex.printStackTrace();
                     }
 
@@ -156,7 +150,22 @@ public class CryptoUI implements ActionListener{
 
         decryptRadioButton.addActionListener(this::actionPerformed);
 
-        passwordField.addActionListener(this::actionPerformed);
+        passwordField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println("Completed");
+            }
+        });
 
 
         frame.setSize(600,600);
@@ -189,24 +198,26 @@ public class CryptoUI implements ActionListener{
             }
         }
         // check if the show password radio was enabled if so, display the password
-        if (e.getSource() == showPasswordRadioButton && showPasswordRadioButton.isSelected()) {
-
+        if (e.getSource() == showPasswordRadioButton && showPasswordRadioButton.isSelected() || e.getSource() == decryptRadioButton && showPasswordRadioButton.isSelected()) {
             passwordField.setEchoChar((char) 0);
-        } else {
+        }
+
+
+        else {
             passwordField.setEchoChar('*');
         }
 
         if (e.getSource() == passwordField && passwordField.getPassword().length == 0)
             passwordLabel.setText("Password");
     }
-    public void encryptString() throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, InvalidParameterSpecException, InvalidAlgorithmParameterException {
+    public void encryptString() throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, InvalidParameterSpecException{
 
 
-
+        int keySize = 256;
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 
-        KeySpec spec = new PBEKeySpec(passwordField.getPassword(), salt, 65536, 256);
+        KeySpec spec = new PBEKeySpec(passwordField.getPassword(), salt, 65536, keySize);
 
         SecretKey tmp = factory.generateSecret(spec);
 
@@ -236,9 +247,10 @@ public class CryptoUI implements ActionListener{
 
         String encodeEncryptedString = Base64.getEncoder().withoutPadding().encodeToString(ciphertext);
 
-        //System.out.println(encodedKey);
+        String outputInfo = String.format("Encrypted String: %s \nEncoded IV Key: %s \nSalt: %s \nKey Size: %s", encodeEncryptedString, encodedKey
+        ,salt, keySize);
 
-        encrpyedTextArea.setText(encodeEncryptedString);
+        encrpyedTextArea.setText(outputInfo);
 
         passwordField.setText(encodedKey);
 
@@ -248,7 +260,7 @@ public class CryptoUI implements ActionListener{
         showPasswordRadioButton.setText("Show secret key");
 
     }
-    public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, InvalidParameterSpecException {
+    public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException{
 
 
 
