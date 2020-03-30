@@ -42,7 +42,7 @@ public class CryptoUI implements ActionListener{
     byte[] iv;
 
 
-    final byte[] salt = new byte[8];
+    private byte[] salt  = new byte[8];;
 
 
 
@@ -163,7 +163,6 @@ public class CryptoUI implements ActionListener{
 
             @Override
             public void keyReleased(KeyEvent e) {
-                System.out.println("Completed");
             }
         });
 
@@ -182,7 +181,7 @@ public class CryptoUI implements ActionListener{
 
         if (e.getSource() == decryptRadioButton && decryptRadioButton.isSelected()) {
 
-            stringToEncryptLabel.setText("Bytes To decrypt");
+            stringToEncryptLabel.setText("Decode To decrypt");
             encryptedLabel.setText("Decrypted");
             passwordLabel.setText("Secret Key");
 
@@ -212,7 +211,7 @@ public class CryptoUI implements ActionListener{
     }
     public void encryptString() throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, InvalidParameterSpecException{
 
-
+        //salt = new byte[8];
         int keySize = 256;
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
@@ -243,16 +242,17 @@ public class CryptoUI implements ActionListener{
 
         byte[] ciphertext = cipher.doFinal(dataByte);
 
-        String encodedKey = Base64.getEncoder().withoutPadding().encodeToString(key.getEncoded());
+
+        String encodedString = Base64.getEncoder().withoutPadding().encodeToString(key.getEncoded());
 
         String encodeEncryptedString = Base64.getEncoder().withoutPadding().encodeToString(ciphertext);
 
-        String outputInfo = String.format("Encrypted String: %s \nEncoded IV Key: %s \nSalt: %s \nKey Size: %s", encodeEncryptedString, encodedKey
+        String outputInfo = String.format("Encrypted String: %s \nEncoded IV Key: %s \nSalt: %s \nKey Size: %s", encodeEncryptedString, viString
         ,salt, keySize);
 
         encrpyedTextArea.setText(outputInfo);
 
-        passwordField.setText(encodedKey);
+        passwordField.setText(encodedString);
 
 
         passwordLabel.setText("Secret key has been generated");
@@ -264,6 +264,7 @@ public class CryptoUI implements ActionListener{
 
 
 
+        System.out.println(salt);
 
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
@@ -275,7 +276,7 @@ public class CryptoUI implements ActionListener{
         SecretKey originalKey = new SecretKeySpec(decodedKey, 0 , decodedKey.length, "AES");
 
 
-        byte[] oldIV = Base64.getDecoder().decode("kEeExbhalzcZCDx1eijwOw");
+        byte[] oldIV = Base64.getDecoder().decode("UZ6M9a0ZtR8x21/FidlQ6w");
 
         cipher.init(Cipher.DECRYPT_MODE,originalKey, new IvParameterSpec(oldIV));
 
