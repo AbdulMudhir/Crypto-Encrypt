@@ -111,6 +111,8 @@ public class CryptoUI implements ActionListener{
                         ex.printStackTrace();
                     } catch (IllegalBlockSizeException ex) {
                         ex.printStackTrace();
+                    } catch (InvalidParameterSpecException ex) {
+                        ex.printStackTrace();
                     }
 
                 }
@@ -210,7 +212,7 @@ public class CryptoUI implements ActionListener{
 
         key = new SecretKeySpec(tmp.getEncoded(), "AES");
 
-        System.out.println(key);
+
 
         cipher.init(Cipher.ENCRYPT_MODE, key);
 
@@ -218,17 +220,26 @@ public class CryptoUI implements ActionListener{
 
         AlgorithmParameters params = cipher.getParameters();
 
-        byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
+        iv = params.getParameterSpec(IvParameterSpec.class).getIV();
 
 
         byte[] ciphertext = cipher.doFinal(dataByte);
 
+        String encodedKey = Base64.getEncoder().encodeToString(key.getEncoded());
 
+        String encodeEncryptedString = Base64.getEncoder().encodeToString(ciphertext);
 
-        encrpyedTextArea.setText(new String(ciphertext));
+        System.out.println(encodedKey);
+
+        encrpyedTextArea.setText(encodeEncryptedString);
 
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+        System.out.println(iv);
+
         cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+
+
         String plaintext = new String(cipher.doFinal(ciphertext), "UTF-8");
         System.out.println(plaintext);
 
@@ -238,30 +249,32 @@ public class CryptoUI implements ActionListener{
 
 
     }
-    public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException {
+    public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, InvalidParameterSpecException {
 
 
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
-        byte [] decodedKey = Base64.getDecoder().decode(String.valueOf(passwordField.getPassword()));
+
+        String oldkey = new String(passwordField.getPassword());
+
+        byte [] decodedKey = Base64.getDecoder().decode(oldkey);
 
         SecretKey originalKey = new SecretKeySpec(decodedKey, 0 , decodedKey.length, "AES");
 
-        cipher.init(Cipher.DECRYPT_MODE,key, new IvParameterSpec(iv));
 
-        byte [] encryptedString = cipher.doFinal(stringToEncryptTextArea.getText().getBytes("UTF-8"));
 
-        String plaintext = new String(encryptedString);
+        cipher.init(Cipher.DECRYPT_MODE,originalKey, new IvParameterSpec(iv));
+
+        String oldencryptedString = stringToEncryptTextArea.getText();
+
+
+        String plaintext = new String(cipher.doFinal(Base64.getDecoder().decode(oldencryptedString)), "UTF-8");
 
         encrpyedTextArea.setText(new String(plaintext));
 
 
 
-//        cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(iv));
-//
-//
-//        String plaintext = new String(cipher.doFinal(ciphertext), "UTF-8");
-//        System.out.println(plaintext);
+
 
     }
 
