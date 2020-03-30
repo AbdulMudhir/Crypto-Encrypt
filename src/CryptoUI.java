@@ -1,7 +1,4 @@
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
+import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
@@ -11,10 +8,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
+import java.io.*;
+import java.security.*;
+import java.security.spec.InvalidParameterSpecException;
+import java.util.Arrays;
+import java.util.Base64;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.spec.KeySpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.IvParameterSpec;
 
 
-import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 
@@ -34,7 +41,13 @@ public class CryptoUI implements ActionListener{
     private JPanel stringToEncryptPanel;
     private JLabel stringToEncryptLabel;
     private JPanel bottomPanel;
+    private JLabel passwordLabel;
     private  Cipher cipher;
+    private SecretKey key;
+    byte[] iv;
+
+
+    final byte[] salt = new byte[8];
 
 
 
@@ -73,7 +86,7 @@ public class CryptoUI implements ActionListener{
 
         frame.getContentPane().add(mainPanel);
 
-        cipher = Cipher.getInstance("AES");
+        cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
 
         stringToEncryptTextArea.addKeyListener(new KeyListener() {
@@ -82,12 +95,49 @@ public class CryptoUI implements ActionListener{
             public void keyTyped(KeyEvent e) {
                 if (decryptRadioButton.isSelected()){
 
+                    try {
+                        decrypt();
+                    } catch (NoSuchPaddingException ex) {
+                        ex.printStackTrace();
+                    } catch (NoSuchAlgorithmException ex) {
+                        ex.printStackTrace();
+                    } catch (InvalidAlgorithmParameterException ex) {
+                        ex.printStackTrace();
+                    } catch (InvalidKeyException ex) {
+                        ex.printStackTrace();
+                    } catch (UnsupportedEncodingException ex) {
+                        ex.printStackTrace();
+                    } catch (BadPaddingException ex) {
+                        ex.printStackTrace();
+                    } catch (IllegalBlockSizeException ex) {
+                        ex.printStackTrace();
+                    }
+
                 }
                 else{
 
 
-                    encryptString();
+                    try {
+                        encryptString();
 
+                    } catch (NoSuchAlgorithmException ex) {
+                        ex.printStackTrace();
+
+                    } catch (InvalidKeySpecException ex) {
+                        ex.printStackTrace();
+                    } catch (InvalidKeyException | UnsupportedEncodingException ex) {
+                        ex.printStackTrace();
+                    } catch (BadPaddingException ex) {
+                        ex.printStackTrace();
+                    } catch (IllegalBlockSizeException ex) {
+                        ex.printStackTrace();
+                    } catch (NoSuchPaddingException ex) {
+                        ex.printStackTrace();
+                    } catch (InvalidParameterSpecException ex) {
+                        ex.printStackTrace();
+                    } catch (InvalidAlgorithmParameterException ex) {
+                        ex.printStackTrace();
+                    }
 
 
                 }
@@ -106,6 +156,7 @@ public class CryptoUI implements ActionListener{
 
         showPasswordRadioButton.addActionListener(this::actionPerformed);
 
+        decryptRadioButton.addActionListener(this::actionPerformed);
 
 
         frame.setSize(600,600);
@@ -120,14 +171,18 @@ public class CryptoUI implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() == decryptRadioButton){
-            if (decryptRadioButton.isSelected()){
-            System.out.println("Radio is on");
-            System.out.println(encrpyedTextArea.getText());
+        if (e.getSource() == decryptRadioButton && decryptRadioButton.isSelected()){
+
+                stringToEncryptLabel.setText("Bytes To decrypt");
+                encryptedLabel.setText("Decrypted");
+                passwordLabel.setText("Secret Key");
+
             }
 
-            else
-                System.out.println("Radio is off");
+            else{
+            stringToEncryptLabel.setText("String To Encrypt");
+            encryptedLabel.setText("Encrypted");
+            passwordLabel.setText("Password");
 
 
 
@@ -142,13 +197,71 @@ public class CryptoUI implements ActionListener{
             passwordField.setEchoChar('*');
         }
     }
-    public void encryptString() {
+    public void encryptString() throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, InvalidParameterSpecException, InvalidAlgorithmParameterException {
 
 
-        System.out.println(passwordField.getPassword());
 
-        String data = stringToEncryptTextArea.getText();
 
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+
+        KeySpec spec = new PBEKeySpec(passwordField.getPassword(), salt, 65536, 256);
+
+        SecretKey tmp = factory.generateSecret(spec);
+
+        key = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+        System.out.println(key);
+
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+
+        byte [] dataByte = stringToEncryptTextArea.getText().getBytes("UTF-8");
+
+        AlgorithmParameters params = cipher.getParameters();
+
+        byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
+
+
+        byte[] ciphertext = cipher.doFinal(dataByte);
+
+
+
+        encrpyedTextArea.setText(new String(ciphertext));
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+        String plaintext = new String(cipher.doFinal(ciphertext), "UTF-8");
+        System.out.println(plaintext);
+
+
+//        System.out.println(passwordField.getPassword());
+//
+
+
+    }
+    public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException {
+
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+        byte [] decodedKey = Base64.getDecoder().decode(String.valueOf(passwordField.getPassword()));
+
+        SecretKey originalKey = new SecretKeySpec(decodedKey, 0 , decodedKey.length, "AES");
+
+        cipher.init(Cipher.DECRYPT_MODE,key, new IvParameterSpec(iv));
+
+        byte [] encryptedString = cipher.doFinal(stringToEncryptTextArea.getText().getBytes("UTF-8"));
+
+        String plaintext = new String(encryptedString);
+
+        encrpyedTextArea.setText(new String(plaintext));
+
+
+
+//        cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(iv));
+//
+//
+//        String plaintext = new String(cipher.doFinal(ciphertext), "UTF-8");
+//        System.out.println(plaintext);
 
     }
 
