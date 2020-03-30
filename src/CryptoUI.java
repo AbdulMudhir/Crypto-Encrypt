@@ -2,8 +2,6 @@ import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,14 +9,11 @@ import java.awt.event.KeyListener;
 import java.io.*;
 import java.security.*;
 import java.security.spec.InvalidParameterSpecException;
-import java.util.Arrays;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.security.spec.KeySpec;
-import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
 
@@ -88,6 +83,7 @@ public class CryptoUI implements ActionListener{
 
         cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
+        passwordField.putClientProperty("JPasswordField.cutCopyAllowed",true);
 
         stringToEncryptTextArea.addKeyListener(new KeyListener() {
 
@@ -121,13 +117,13 @@ public class CryptoUI implements ActionListener{
 
                     try {
                         encryptString();
-
                     } catch (NoSuchAlgorithmException ex) {
                         ex.printStackTrace();
-
                     } catch (InvalidKeySpecException ex) {
                         ex.printStackTrace();
-                    } catch (InvalidKeyException | UnsupportedEncodingException ex) {
+                    } catch (InvalidKeyException ex) {
+                        ex.printStackTrace();
+                    } catch (UnsupportedEncodingException ex) {
                         ex.printStackTrace();
                     } catch (BadPaddingException ex) {
                         ex.printStackTrace();
@@ -160,6 +156,8 @@ public class CryptoUI implements ActionListener{
 
         decryptRadioButton.addActionListener(this::actionPerformed);
 
+        passwordField.addActionListener(this::actionPerformed);
+
 
         frame.setSize(600,600);
 
@@ -173,31 +171,33 @@ public class CryptoUI implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() == decryptRadioButton && decryptRadioButton.isSelected()){
+        if (e.getSource() == decryptRadioButton && decryptRadioButton.isSelected()) {
 
-                stringToEncryptLabel.setText("Bytes To decrypt");
-                encryptedLabel.setText("Decrypted");
-                passwordLabel.setText("Secret Key");
+            stringToEncryptLabel.setText("Bytes To decrypt");
+            encryptedLabel.setText("Decrypted");
+            passwordLabel.setText("Secret Key");
 
-            }
-
-            else{
+        } else {
             stringToEncryptLabel.setText("String To Encrypt");
             encryptedLabel.setText("Encrypted");
-            passwordLabel.setText("Password");
+
+            if (passwordLabel.getText().equals("Secret key has been generated") || passwordLabel.getText().equals("Secret Key") ) ;
+            else {
+                passwordLabel.setText("Password");
 
 
-
-
+            }
         }
         // check if the show password radio was enabled if so, display the password
-        if (e.getSource() == showPasswordRadioButton && showPasswordRadioButton.isSelected()){
+        if (e.getSource() == showPasswordRadioButton && showPasswordRadioButton.isSelected()) {
 
             passwordField.setEchoChar((char) 0);
-        }
-        else{
+        } else {
             passwordField.setEchoChar('*');
         }
+
+        if (e.getSource() == passwordField && passwordField.getPassword().length == 0)
+            passwordLabel.setText("Password");
     }
     public void encryptString() throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, InvalidParameterSpecException, InvalidAlgorithmParameterException {
 
@@ -222,48 +222,50 @@ public class CryptoUI implements ActionListener{
 
         iv = params.getParameterSpec(IvParameterSpec.class).getIV();
 
+        String viString = Base64.getEncoder().withoutPadding().encodeToString(iv);
 
-        byte[] ciphertext = cipher.doFinal(dataByte);
+        System.out.println(viString);
 
-        String encodedKey = Base64.getEncoder().encodeToString(key.getEncoded());
-
-        String encodeEncryptedString = Base64.getEncoder().encodeToString(ciphertext);
-
-        System.out.println(encodedKey);
-
-        encrpyedTextArea.setText(encodeEncryptedString);
-
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
         System.out.println(iv);
 
-        cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+
+        byte[] ciphertext = cipher.doFinal(dataByte);
+
+        String encodedKey = Base64.getEncoder().withoutPadding().encodeToString(key.getEncoded());
+
+        String encodeEncryptedString = Base64.getEncoder().withoutPadding().encodeToString(ciphertext);
+
+        //System.out.println(encodedKey);
+
+        encrpyedTextArea.setText(encodeEncryptedString);
+
+        passwordField.setText(encodedKey);
 
 
-        String plaintext = new String(cipher.doFinal(ciphertext), "UTF-8");
-        System.out.println(plaintext);
+        passwordLabel.setText("Secret key has been generated");
 
-
-//        System.out.println(passwordField.getPassword());
-//
-
+        showPasswordRadioButton.setText("Show secret key");
 
     }
     public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, InvalidParameterSpecException {
 
 
+
+
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
 
-        String oldkey = new String(passwordField.getPassword());
+        String oldKey = new String(passwordField.getPassword());
 
-        byte [] decodedKey = Base64.getDecoder().decode(oldkey);
+        byte [] decodedKey = Base64.getDecoder().decode(oldKey);
 
         SecretKey originalKey = new SecretKeySpec(decodedKey, 0 , decodedKey.length, "AES");
 
 
+        byte[] oldIV = Base64.getDecoder().decode("kEeExbhalzcZCDx1eijwOw");
 
-        cipher.init(Cipher.DECRYPT_MODE,originalKey, new IvParameterSpec(iv));
+        cipher.init(Cipher.DECRYPT_MODE,originalKey, new IvParameterSpec(oldIV));
 
         String oldencryptedString = stringToEncryptTextArea.getText();
 
