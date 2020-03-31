@@ -183,7 +183,7 @@ public class CryptoUI implements ActionListener{
 
         if (e.getSource() == decryptRadioButton && decryptRadioButton.isSelected()) {
 
-            stringToEncryptLabel.setText("Decode To decrypt");
+            stringToEncryptLabel.setText("Encrypted Message To Decrypt");
             encryptedLabel.setText("Decrypted");
             passwordLabel.setText("Secret Key");
 
@@ -191,7 +191,8 @@ public class CryptoUI implements ActionListener{
             stringToEncryptLabel.setText("String To Encrypt");
             encryptedLabel.setText("Encrypted");
 
-            if (passwordLabel.getText().equals("Secret key has been generated") || passwordLabel.getText().equals("Secret Key") ) ;
+            if (passwordLabel.getText().equals("Secret key has been generated") || passwordLabel.getText().equals("Secret Key") && passwordField.getPassword().length > 0) ;
+
             else {
                 passwordLabel.setText("Password");
 
