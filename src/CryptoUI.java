@@ -65,92 +65,121 @@ public class CryptoUI implements ActionListener{
 
         stringToEncryptTextArea.addKeyListener(new KeyListener() {
 
-            @Override
-            public void keyTyped(KeyEvent e) {
+                                                   @Override
+                                                   public void keyTyped(KeyEvent e) {
 
-            }
+                                                   }
 
-            @Override
-            public void keyPressed(KeyEvent e) {
+                                                   @Override
+                                                   public void keyPressed(KeyEvent e) {
 
-            }
+                                                   }
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (decryptRadioButton.isSelected()){
+                                                   @Override
+                                                   public void keyReleased(KeyEvent e) {
+                                                       if (decryptRadioButton.isSelected()) {
 
-                    try {
-                        decrypt();
-                    } catch (NoSuchPaddingException ex) {
-                        ex.printStackTrace();
-                    } catch (NoSuchAlgorithmException ex) {
-                        ex.printStackTrace();
-                    } catch (InvalidAlgorithmParameterException ex) {
-                        ex.printStackTrace();
-                    } catch (InvalidKeyException ex) {
-                        ex.printStackTrace();
-                    } catch (UnsupportedEncodingException ex) {
-                        ex.printStackTrace();
-                    } catch (BadPaddingException ex) {
-                        ex.printStackTrace();
-                    } catch (IllegalBlockSizeException ex) {
-                        ex.printStackTrace();
-                    } catch (InvalidKeySpecException ex) {
-                        ex.printStackTrace();
-                    }
+                                                           try {
+                                                               decrypt();
+                                                           } catch (NoSuchPaddingException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (NoSuchAlgorithmException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (InvalidAlgorithmParameterException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (InvalidKeyException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (UnsupportedEncodingException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (BadPaddingException ex) {
+                                                               encrpyedTextArea.setText("Invalid Key");
+                                                               ex.printStackTrace();
+                                                           } catch (IllegalBlockSizeException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (InvalidKeySpecException ex) {
+                                                               ex.printStackTrace();
+                                                           }
 
-                }
-                else{
-
-
-                    try {
-                        encryptString();
-                    } catch (NoSuchAlgorithmException ex) {
-                        ex.printStackTrace();
-                    } catch (InvalidKeySpecException ex) {
-                        ex.printStackTrace();
-                    } catch (InvalidKeyException ex) {
-                        ex.printStackTrace();
-                    } catch (UnsupportedEncodingException ex) {
-                        ex.printStackTrace();
-                    } catch (BadPaddingException ex) {
-                        ex.printStackTrace();
-                    } catch (IllegalBlockSizeException ex) {
-                        ex.printStackTrace();
-                    } catch (InvalidParameterSpecException ex) {
-                        ex.printStackTrace();
-                    }
+                                                       } else {
 
 
-                }
+                                                           try {
 
-            }
-        });
+                                                               if (stringToEncryptTextArea.getText().length() > 0)
+                                                                   encryptString();
+
+                                                           } catch (NoSuchAlgorithmException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (InvalidKeySpecException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (InvalidKeyException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (UnsupportedEncodingException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (BadPaddingException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (IllegalBlockSizeException ex) {
+                                                               ex.printStackTrace();
+                                                           } catch (InvalidParameterSpecException ex) {
+                                                               ex.printStackTrace();
+                                                           }
+
+
+                                                       }
+
+                                                   }
+                                               });
 
         showPasswordRadioButton.addActionListener(this::actionPerformed);
 
         decryptRadioButton.addActionListener(this::actionPerformed);
 
         passwordField.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
+                                         @Override
+                                         public void keyTyped(KeyEvent e) {
 
-            }
+                                         }
 
-            @Override
-            public void keyPressed(KeyEvent e) {
+                                         @Override
+                                         public void keyPressed(KeyEvent e) {
 
-            }
+                                         }
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        });
+                                         @Override
+                                         public void keyReleased(KeyEvent e) {
+
+                                             if (!decryptRadioButton.isSelected()) {
+                                                 if (stringToEncryptTextArea.getText().length() > 0) {
+                                                     try {
+                                                         encryptString();
+                                                     } catch (NoSuchAlgorithmException ex) {
+                                                         ex.printStackTrace();
+                                                     } catch (InvalidKeySpecException ex) {
+                                                         ex.printStackTrace();
+                                                     } catch (InvalidKeyException ex) {
+                                                         ex.printStackTrace();
+                                                     } catch (UnsupportedEncodingException ex) {
+                                                         ex.printStackTrace();
+                                                     } catch (BadPaddingException ex) {
+                                                         ex.printStackTrace();
+                                                     } catch (IllegalBlockSizeException ex) {
+                                                         ex.printStackTrace();
+                                                     } catch (InvalidParameterSpecException ex) {
+                                                         ex.printStackTrace();
+                                                     }
+                                                 }
+
+
+                                     }}});
+
+
+
 
 
         frame.setSize(600,600);
 
         frame.setVisible(true);
+
 
     }
 
@@ -260,15 +289,20 @@ public class CryptoUI implements ActionListener{
 //
 //        SecretKey originalKey = new SecretKeySpec(decodedKey, 0 , decodedKey.length, "AES");
 
+        try{
+            byte[] IV = Base64.getDecoder().decode(encryptedString[1]);
 
-        byte[] IV = Base64.getDecoder().decode(encryptedString[1]);
-
-        cipher.init(Cipher.DECRYPT_MODE,key, new IvParameterSpec(iv));
+            cipher.init(Cipher.DECRYPT_MODE,key, new IvParameterSpec(iv));
 
 
-        String plaintext = new String(cipher.doFinal(Base64.getDecoder().decode(encryptedString[0])), "UTF-8");
+            String plaintext = new String(cipher.doFinal(Base64.getDecoder().decode(encryptedString[0])), "UTF-8");
 
-        encrpyedTextArea.setText(new String(plaintext));
+            encrpyedTextArea.setText(new String(plaintext));}
+            catch(ArrayIndexOutOfBoundsException as){
+
+                System.out.println(as);
+
+            }
 
 
 

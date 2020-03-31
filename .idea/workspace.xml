@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe3209b3-1ffc-4221-8a2a-561a5c5905c5" name="Default Changelist" comment="e">
+    <list default="true" id="fe3209b3-1ffc-4221-8a2a-561a5c5905c5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CryptoUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CryptoUI.java" afterDir="false" />
     </list>
@@ -158,7 +158,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585666210303</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="fixed encrypting/decrypting">
+      <created>1585675206829</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1585675206829</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -175,52 +182,56 @@
     <MESSAGE value="added minor addition to check" />
     <MESSAGE value="fixed to encrypt string now takes into account all characters" />
     <MESSAGE value="removed secret key from password section" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed secret key from password section" />
+    <MESSAGE value="fixed encrypting/decrypting" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed encrypting/decrypting" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser" timestamp="1585596267891">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585596267891" />
-    <state x="934" y="294" key="CommitChangelistDialog2" timestamp="1585670544730">
+    <state x="934" y="294" key="CommitChangelistDialog2" timestamp="1585675206092">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="934" y="294" key="CommitChangelistDialog2/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585670544730" />
-    <state width="2517" height="398" key="GridCell.Tab.0.bottom" timestamp="1585675140604">
+    <state x="934" y="294" key="CommitChangelistDialog2/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675206092" />
+    <state width="2517" height="107" key="GridCell.Tab.0.bottom" timestamp="1585676499510">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="398" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675140604" />
-    <state width="2517" height="398" key="GridCell.Tab.0.center" timestamp="1585675140604">
+    <state width="2517" height="107" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585676499510" />
+    <state width="2517" height="107" key="GridCell.Tab.0.center" timestamp="1585676499509">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="398" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675140604" />
-    <state width="2517" height="398" key="GridCell.Tab.0.left" timestamp="1585675140603">
+    <state width="2517" height="107" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585676499509" />
+    <state width="2517" height="107" key="GridCell.Tab.0.left" timestamp="1585676499509">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="398" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675140603" />
-    <state width="2517" height="398" key="GridCell.Tab.0.right" timestamp="1585675140604">
+    <state width="2517" height="107" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585676499509" />
+    <state width="2517" height="107" key="GridCell.Tab.0.right" timestamp="1585676499509">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="398" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675140604" />
-    <state width="2517" height="492" key="GridCell.Tab.1.bottom" timestamp="1585662046670">
+    <state width="2517" height="107" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585676499509" />
+    <state width="2517" height="492" key="GridCell.Tab.1.bottom" timestamp="1585675694416">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="492" key="GridCell.Tab.1.bottom/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585662046670" />
-    <state width="2517" height="492" key="GridCell.Tab.1.center" timestamp="1585662046669">
+    <state width="2517" height="492" key="GridCell.Tab.1.bottom/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675694416" />
+    <state width="2517" height="492" key="GridCell.Tab.1.center" timestamp="1585675694416">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="492" key="GridCell.Tab.1.center/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585662046669" />
-    <state width="2517" height="492" key="GridCell.Tab.1.left" timestamp="1585662046669">
+    <state width="2517" height="492" key="GridCell.Tab.1.center/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675694416" />
+    <state width="2517" height="492" key="GridCell.Tab.1.left" timestamp="1585675694416">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="492" key="GridCell.Tab.1.left/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585662046669" />
-    <state width="2517" height="492" key="GridCell.Tab.1.right" timestamp="1585662046670">
+    <state width="2517" height="492" key="GridCell.Tab.1.left/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675694416" />
+    <state width="2517" height="492" key="GridCell.Tab.1.right" timestamp="1585675694416">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="492" key="GridCell.Tab.1.right/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585662046670" />
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1585666211666">
+    <state width="2517" height="492" key="GridCell.Tab.1.right/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675694416" />
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1585675207935">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585666211666" />
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675207935" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Crypto_Encrypt$Main.ic" NAME="Main Coverage Results" MODIFIED="1585675430421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
