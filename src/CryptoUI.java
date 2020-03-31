@@ -117,7 +117,7 @@ public class CryptoUI implements ActionListener{
 
                     try {
                         encryptString();
-                    } catch (NoSuchAlgorithmException ex)
+                    } catch (NoSuchAlgorithmException ex) {
                         ex.printStackTrace();
                     } catch (InvalidKeySpecException ex) {
                         ex.printStackTrace();
