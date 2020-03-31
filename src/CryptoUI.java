@@ -81,19 +81,16 @@ public class CryptoUI implements ActionListener{
 
                                                            try {
                                                                decrypt();
-                                                           } catch (NoSuchPaddingException ex) {
-                                                               ex.printStackTrace();
-                                                           } catch (NoSuchAlgorithmException ex) {
+                                                           }  catch (NoSuchAlgorithmException ex) {
                                                                ex.printStackTrace();
                                                            } catch (InvalidAlgorithmParameterException ex) {
                                                                ex.printStackTrace();
                                                            } catch (InvalidKeyException ex) {
-                                                               encrpyedTextArea.setText("Invalid Password");
+                                                               ex.printStackTrace();
                                                            } catch (UnsupportedEncodingException ex) {
                                                                ex.printStackTrace();
                                                            } catch (BadPaddingException ex) {
                                                                encrpyedTextArea.setText("Invalid Password");
-                                                               ex.printStackTrace();
                                                            } catch (IllegalBlockSizeException ex) {
                                                                ex.printStackTrace();
                                                            } catch (InvalidKeySpecException ex) {
@@ -108,19 +105,7 @@ public class CryptoUI implements ActionListener{
                                                                if (stringToEncryptTextArea.getText().length() > 0)
                                                                    encryptString();
 
-                                                           } catch (NoSuchAlgorithmException ex) {
-                                                               ex.printStackTrace();
-                                                           } catch (InvalidKeySpecException ex) {
-                                                               ex.printStackTrace();
-                                                           } catch (InvalidKeyException ex) {
-                                                               ex.printStackTrace();
-                                                           } catch (UnsupportedEncodingException ex) {
-                                                               ex.printStackTrace();
-                                                           } catch (BadPaddingException ex) {
-                                                               ex.printStackTrace();
-                                                           } catch (IllegalBlockSizeException ex) {
-                                                               ex.printStackTrace();
-                                                           } catch (InvalidParameterSpecException ex) {
+                                                           } catch (NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException | UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException | InvalidParameterSpecException ex) {
                                                                ex.printStackTrace();
                                                            }
 
@@ -148,8 +133,8 @@ public class CryptoUI implements ActionListener{
                                          @Override
                                          public void keyReleased(KeyEvent e) {
 
-                                             if (!decryptRadioButton.isSelected()) {
-                                                 if (stringToEncryptTextArea.getText().length() > 0) {
+                                             if (!decryptRadioButton.isSelected() && stringToEncryptTextArea.getText().length() > 0) {
+
                                                      try {
                                                          encryptString();
                                                      } catch (NoSuchAlgorithmException ex) {
@@ -167,10 +152,39 @@ public class CryptoUI implements ActionListener{
                                                      } catch (InvalidParameterSpecException ex) {
                                                          ex.printStackTrace();
                                                      }
+                                             }
+
+
+                                                 else{
+                                                     if (stringToEncryptTextArea.getText().length() > 0){
+
+                                                         System.out.println("i am here");
+                                                         try {
+                                                             decrypt();
+                                                         }  catch (NoSuchAlgorithmException ex) {
+                                                             ex.printStackTrace();
+                                                         } catch (InvalidAlgorithmParameterException ex) {
+                                                             ex.printStackTrace();
+                                                         } catch (InvalidKeyException ex) {
+                                                             ex.printStackTrace();
+                                                         } catch (UnsupportedEncodingException ex) {
+                                                             ex.printStackTrace();
+                                                         } catch (BadPaddingException ex) {
+                                                             encrpyedTextArea.setText("Invalid Password");
+                                                         } catch (IllegalBlockSizeException ex) {
+                                                             ex.printStackTrace();
+                                                         } catch (InvalidKeySpecException ex) {
+                                                             ex.printStackTrace();
+                                                         }
+
+                                                     }
+
+
                                                  }
 
 
-                                     }}});
+
+                                     }});
 
 
 
@@ -254,7 +268,7 @@ public class CryptoUI implements ActionListener{
         encrpyedTextArea.setText(outputInfo);
 
     }
-    public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
+    public void decrypt() throws  NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
 
 
         int keySize = 256;
@@ -268,7 +282,6 @@ public class CryptoUI implements ActionListener{
 
         key = new SecretKeySpec(tmp.getEncoded(), "AES");
 
-        System.out.println();
 
         String [] encryptedString = stringToEncryptTextArea.getText().strip().split("#");
 
@@ -290,10 +303,8 @@ public class CryptoUI implements ActionListener{
 
         try{
 
-            System.out.println(encryptedString[1]);
             byte[] iv = Base64.getDecoder().decode(encryptedString[1]);
 
-            System.out.println(iv);
 
 
             cipher.init(Cipher.DECRYPT_MODE,key, new IvParameterSpec(iv));
