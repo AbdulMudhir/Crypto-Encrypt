@@ -88,11 +88,11 @@ public class CryptoUI implements ActionListener{
                                                            } catch (InvalidAlgorithmParameterException ex) {
                                                                ex.printStackTrace();
                                                            } catch (InvalidKeyException ex) {
-                                                               ex.printStackTrace();
+                                                               encrpyedTextArea.setText("Invalid Password");
                                                            } catch (UnsupportedEncodingException ex) {
                                                                ex.printStackTrace();
                                                            } catch (BadPaddingException ex) {
-                                                               encrpyedTextArea.setText("Invalid Key");
+                                                               encrpyedTextArea.setText("Invalid Password");
                                                                ex.printStackTrace();
                                                            } catch (IllegalBlockSizeException ex) {
                                                                ex.printStackTrace();
@@ -257,9 +257,6 @@ public class CryptoUI implements ActionListener{
     public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
 
 
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-
-
         int keySize = 256;
         salt = new byte[8];
 
@@ -271,10 +268,12 @@ public class CryptoUI implements ActionListener{
 
         key = new SecretKeySpec(tmp.getEncoded(), "AES");
 
+        System.out.println();
 
         String [] encryptedString = stringToEncryptTextArea.getText().strip().split("#");
 
 
+        //System.out.println(encryptedString[0]+ encryptedString[1]);
 
 
 
@@ -290,7 +289,12 @@ public class CryptoUI implements ActionListener{
 //        SecretKey originalKey = new SecretKeySpec(decodedKey, 0 , decodedKey.length, "AES");
 
         try{
-            byte[] IV = Base64.getDecoder().decode(encryptedString[1]);
+
+            System.out.println(encryptedString[1]);
+            byte[] iv = Base64.getDecoder().decode(encryptedString[1]);
+
+            System.out.println(iv);
+
 
             cipher.init(Cipher.DECRYPT_MODE,key, new IvParameterSpec(iv));
 
@@ -298,9 +302,9 @@ public class CryptoUI implements ActionListener{
             String plaintext = new String(cipher.doFinal(Base64.getDecoder().decode(encryptedString[0])), "UTF-8");
 
             encrpyedTextArea.setText(new String(plaintext));}
-            catch(ArrayIndexOutOfBoundsException as){
+            catch(ArrayIndexOutOfBoundsException e){
 
-                System.out.println(as);
+                encrpyedTextArea.setText("Invalid Encryption");
 
             }
 
