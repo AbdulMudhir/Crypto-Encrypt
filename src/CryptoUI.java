@@ -2,7 +2,6 @@ import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -158,7 +157,6 @@ public class CryptoUI implements ActionListener{
                                                  else{
                                                      if (stringToEncryptTextArea.getText().length() > 0){
 
-                                                         System.out.println("i am here");
                                                          try {
                                                              decrypt();
                                                          }  catch (NoSuchAlgorithmException ex) {
