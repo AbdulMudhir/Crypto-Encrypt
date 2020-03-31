@@ -19,7 +19,6 @@ import javax.crypto.spec.IvParameterSpec;
 
 
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 
 public class CryptoUI implements ActionListener{
 
@@ -49,31 +48,6 @@ public class CryptoUI implements ActionListener{
 
 
 
-
-    public static void main (String [] args) throws NoSuchAlgorithmException, NoSuchPaddingException {
-
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }
-
-        catch (UnsupportedLookAndFeelException e) {
-            // handle exception
-        }
-        catch (ClassNotFoundException e) {
-            // handle exception
-        }
-        catch (InstantiationException e) {
-            // handle exception
-        }
-        catch (IllegalAccessException e) {
-            // handle exception
-        }
-
-        CryptoUI cryptoUI = new CryptoUI();
-        cryptoUI.setupWindow();
-
-
-    }
 
 
     public void setupWindow() throws NoSuchPaddingException, NoSuchAlgorithmException {
@@ -250,23 +224,15 @@ public class CryptoUI implements ActionListener{
         byte[] ciphertext = cipher.doFinal(dataByte);
 
 
-        String encodedString = Base64.getEncoder().withoutPadding().encodeToString(key.getEncoded());
+        String encodedKey = Base64.getEncoder().withoutPadding().encodeToString(key.getEncoded());
 
         String encodedEncryptedString = Base64.getEncoder().withoutPadding().encodeToString(ciphertext);
 
         //String encodedSalt = Base64.getEncoder().withoutPadding().encodeToString(salt);
-
-        String outputInfo = String.format("Encrypted String: %s \nEncoded IV Key: %s \nSalt: %s \nKey Size: %s", encodedEncryptedString, viString
+        String outputInfo = String.format("Encrypted Key: %s \nEncrypted String: %s \nEncoded IV : %s \nSalt: %s \nKey Size: %s",encodedKey ,encodedEncryptedString, viString
         , salt, keySize);
 
         encrpyedTextArea.setText(outputInfo);
-
-        passwordField.setText(encodedString);
-
-
-        passwordLabel.setText("Secret key has been generated");
-
-        showPasswordRadioButton.setText("Show secret key");
 
     }
     public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException{
