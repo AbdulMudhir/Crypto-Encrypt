@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe3209b3-1ffc-4221-8a2a-561a5c5905c5" name="Default Changelist" comment="">
+    <list default="true" id="fe3209b3-1ffc-4221-8a2a-561a5c5905c5" name="Default Changelist" comment="e">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CryptoUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/CryptoUI.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CryptoUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CryptoUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -152,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585659862889</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="removed secret key from password section">
+      <created>1585666210303</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1585666210303</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -168,33 +174,34 @@
     <MESSAGE value="accidently remove semi colon" />
     <MESSAGE value="added minor addition to check" />
     <MESSAGE value="fixed to encrypt string now takes into account all characters" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed to encrypt string now takes into account all characters" />
+    <MESSAGE value="removed secret key from password section" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed secret key from password section" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser" timestamp="1585596267891">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1085" y="409" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585596267891" />
-    <state x="934" y="294" key="CommitChangelistDialog2" timestamp="1585659862256">
+    <state x="934" y="294" key="CommitChangelistDialog2" timestamp="1585670544730">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="934" y="294" key="CommitChangelistDialog2/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585659862256" />
-    <state width="2517" height="398" key="GridCell.Tab.0.bottom" timestamp="1585666148555">
+    <state x="934" y="294" key="CommitChangelistDialog2/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585670544730" />
+    <state width="2517" height="398" key="GridCell.Tab.0.bottom" timestamp="1585675140604">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="398" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585666148555" />
-    <state width="2517" height="398" key="GridCell.Tab.0.center" timestamp="1585666148555">
+    <state width="2517" height="398" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675140604" />
+    <state width="2517" height="398" key="GridCell.Tab.0.center" timestamp="1585675140604">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="398" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585666148555" />
-    <state width="2517" height="398" key="GridCell.Tab.0.left" timestamp="1585666148555">
+    <state width="2517" height="398" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675140604" />
+    <state width="2517" height="398" key="GridCell.Tab.0.left" timestamp="1585675140603">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="398" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585666148555" />
-    <state width="2517" height="398" key="GridCell.Tab.0.right" timestamp="1585666148555">
+    <state width="2517" height="398" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675140603" />
+    <state width="2517" height="398" key="GridCell.Tab.0.right" timestamp="1585675140604">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2517" height="398" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585666148555" />
+    <state width="2517" height="398" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585675140604" />
     <state width="2517" height="492" key="GridCell.Tab.1.bottom" timestamp="1585662046670">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -211,9 +218,9 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2517" height="492" key="GridCell.Tab.1.right/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585662046670" />
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1585659864549">
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1585666211666">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585659864549" />
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2/0.0.2560.1400/2560.0.1440.860@0.0.2560.1400" timestamp="1585666211666" />
   </component>
 </project>

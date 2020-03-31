@@ -95,6 +95,8 @@ public class CryptoUI implements ActionListener{
                         ex.printStackTrace();
                     } catch (IllegalBlockSizeException ex) {
                         ex.printStackTrace();
+                    } catch (InvalidKeySpecException ex) {
+                        ex.printStackTrace();
                     }
 
                 }
@@ -162,19 +164,12 @@ public class CryptoUI implements ActionListener{
 
             stringToEncryptLabel.setText("Encrypted Message To Decrypt");
             encryptedLabel.setText("Decrypted");
-            passwordLabel.setText("Secret Key");
 
         } else {
             stringToEncryptLabel.setText("String To Encrypt");
             encryptedLabel.setText("Encrypted");
+            passwordLabel.setText("Password");
 
-            if (passwordLabel.getText().equals("Secret key has been generated") || passwordLabel.getText().equals("Secret Key") && passwordField.getPassword().length > 0) ;
-
-            else {
-                passwordLabel.setText("Password");
-
-
-            }
         }
         // check if the show password radio was enabled if so, display the password
         if (e.getSource() == showPasswordRadioButton && showPasswordRadioButton.isSelected() || e.getSource() == decryptRadioButton && showPasswordRadioButton.isSelected()) {
@@ -215,11 +210,6 @@ public class CryptoUI implements ActionListener{
 
         String viString = Base64.getEncoder().withoutPadding().encodeToString(iv);
 
-        System.out.println(viString);
-
-
-        System.out.println(iv);
-
 
         byte[] ciphertext = cipher.doFinal(dataByte);
 
@@ -229,33 +219,54 @@ public class CryptoUI implements ActionListener{
         String encodedEncryptedString = Base64.getEncoder().withoutPadding().encodeToString(ciphertext);
 
         //String encodedSalt = Base64.getEncoder().withoutPadding().encodeToString(salt);
-        String outputInfo = String.format("Encrypted Key: %s \nEncrypted String: %s \nEncoded IV : %s \nSalt: %s \nKey Size: %s",encodedKey ,encodedEncryptedString, viString
+        String outputInfo = String.format("Encrypted Key: %s \nEncrypted String: %s#%s \nEncoded IV : %s \nSalt: %s \nKey Size: %s",encodedKey,encodedEncryptedString,viString , viString
         , salt, keySize);
 
         encrpyedTextArea.setText(outputInfo);
 
     }
-    public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException{
+    public void decrypt() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
 
 
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
 
-        String originalKeyBase64String = new String(passwordField.getPassword());
+        int keySize = 256;
+        salt = new byte[8];
 
-        byte [] decodedKey = Base64.getDecoder().decode(originalKeyBase64String);
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 
-        SecretKey originalKey = new SecretKeySpec(decodedKey, 0 , decodedKey.length, "AES");
+        KeySpec spec = new PBEKeySpec(passwordField.getPassword(), salt, 65536, keySize);
 
+        SecretKey tmp = factory.generateSecret(spec);
 
-        byte[] oldIV = Base64.getDecoder().decode("UZ6M9a0ZtR8x21/FidlQ6w");
-
-        cipher.init(Cipher.DECRYPT_MODE,originalKey, new IvParameterSpec(iv));
-
-        String oldEncryptedString = stringToEncryptTextArea.getText();
+        key = new SecretKeySpec(tmp.getEncoded(), "AES");
 
 
-        String plaintext = new String(cipher.doFinal(Base64.getDecoder().decode(oldEncryptedString)), "UTF-8");
+        String [] encryptedString = stringToEncryptTextArea.getText().strip().split("#");
+
+
+
+
+
+        // for debugging
+//        String encodedKey = Base64.getEncoder().withoutPadding().encodeToString(key.getEncoded());
+//        System.out.println(encodedKey);
+
+
+//        String originalKeyBase64String = new String(secretKey[0]);
+//
+//        byte [] decodedKey = Base64.getDecoder().decode(originalKeyBase64String);
+//
+//        SecretKey originalKey = new SecretKeySpec(decodedKey, 0 , decodedKey.length, "AES");
+
+
+        byte[] IV = Base64.getDecoder().decode(encryptedString[1]);
+
+        cipher.init(Cipher.DECRYPT_MODE,key, new IvParameterSpec(iv));
+
+
+        String plaintext = new String(cipher.doFinal(Base64.getDecoder().decode(encryptedString[0])), "UTF-8");
 
         encrpyedTextArea.setText(new String(plaintext));
 
