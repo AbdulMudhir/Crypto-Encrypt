@@ -2,6 +2,7 @@ import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -87,10 +88,21 @@ public class CryptoUI implements ActionListener{
 
         passwordField.putClientProperty("JPasswordField.cutCopyAllowed",true);
 
+
         stringToEncryptTextArea.addKeyListener(new KeyListener() {
 
             @Override
             public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
                 if (decryptRadioButton.isSelected()){
 
                     try {
@@ -135,15 +147,6 @@ public class CryptoUI implements ActionListener{
 
 
                 }
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
 
             }
         });
