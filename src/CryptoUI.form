@@ -18,7 +18,7 @@
         <properties>
           <background color="-1"/>
         </properties>
-        <border type="empty">
+        <border type="none">
           <title-color color="-4473925"/>
           <color color="-16777216"/>
         </border>
@@ -30,19 +30,9 @@
             </constraints>
             <properties/>
             <border type="line">
-              <color color="-16777216"/>
+              <color color="-4473925"/>
             </border>
             <children>
-              <component id="288c1" class="javax.swing.JTextArea" binding="encrpyedTextArea">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <text value=""/>
-                </properties>
-              </component>
               <component id="5fe69" class="javax.swing.JLabel" binding="encryptedLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -51,6 +41,21 @@
                   <text value="Encrypted"/>
                 </properties>
               </component>
+              <scrollpane id="20a9a" binding="encryptedScrollPane">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="288c1" class="javax.swing.JTextArea" binding="encrpyedTextArea">
+                    <constraints/>
+                    <properties>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <grid id="def60" binding="stringToEncryptPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -59,18 +64,24 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
-            <border type="line"/>
+            <border type="line">
+              <color color="-4473925"/>
+            </border>
             <children>
-              <scrollpane id="c12f8">
+              <scrollpane id="c12f8" binding="stringToEncryptScrollPane">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <enabled value="true"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="62c64" class="javax.swing.JTextArea" binding="stringToEncryptTextArea">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <lineWrap value="true"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>

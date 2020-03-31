@@ -37,6 +37,8 @@ public class CryptoUI implements ActionListener{
     private JLabel stringToEncryptLabel;
     private JPanel bottomPanel;
     private JLabel passwordLabel;
+    private JScrollPane stringToEncryptScrollPane;
+    private JScrollPane encryptedScrollPane;
     private  Cipher cipher;
     private SecretKey key;
     byte[] iv;
@@ -115,7 +117,7 @@ public class CryptoUI implements ActionListener{
 
                     try {
                         encryptString();
-                    } catch (NoSuchAlgorithmException ex) {
+                    } catch (NoSuchAlgorithmException ex)
                         ex.printStackTrace();
                     } catch (InvalidKeySpecException ex) {
                         ex.printStackTrace();
@@ -278,7 +280,7 @@ public class CryptoUI implements ActionListener{
 
         byte[] oldIV = Base64.getDecoder().decode("UZ6M9a0ZtR8x21/FidlQ6w");
 
-        cipher.init(Cipher.DECRYPT_MODE,originalKey, new IvParameterSpec(oldIV));
+        cipher.init(Cipher.DECRYPT_MODE,originalKey, new IvParameterSpec(iv));
 
         String oldEncryptedString = stringToEncryptTextArea.getText();
 
